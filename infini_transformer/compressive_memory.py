@@ -175,7 +175,7 @@ class CompressiveMemory(nn.Module):
                     
             # Apply normalization term update
             # The calculation is described in equation (4) of the paper
-            z = z + (nn.functional.elu(k) + 1.0).sum(dim=-2, keepdim=True).transpose(-2, -1)
+            z = z.to(device) + (nn.functional.elu(k) + 1.0).sum(dim=-2, keepdim=True).transpose(-2, -1).to(device)
 
             # Calculate weighted average of dot-product and memory-based attention
             # The calculation is described in equation (6) of the paper
