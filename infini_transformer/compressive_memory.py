@@ -168,10 +168,10 @@ class CompressiveMemory(nn.Module):
             # The update rules are described in equations (4) and (5) of the paper
             sigma_k = nn.functional.elu(k) + 1.0
             if self.update == "linear":
-                mem = mem + sigma_k.transpose(-2, -1) @ v
+                mem = mem.to(device) + sigma_k.transpose(-2, -1).to(device) @ v.to(device)
             elif self.update == "delta":
                 mem = mem + \
-                    sigma_k.transpose(-2, -1) @ (v - (sigma_k @ mem) / (sigma_k @ z))
+                    sigma_k.transpose(-2, -1).to(device) @ (v.to(device) - (sigma_k.to(device) @ mem.to(device)) / (sigma_k.to(device) @ z.to(device)))
                     
             # Apply normalization term update
             # The calculation is described in equation (4) of the paper
