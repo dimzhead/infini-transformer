@@ -162,7 +162,7 @@ class CompressiveMemory(nn.Module):
             # Calculate normalized linear attention
             # The calculation is described in equation (3) of the paper
             # shape: (batch_size, num_heads, segment_len, dim_value)
-            att_mem = (sigma_q @ mem.to(device) / (sigma_q @ z)
+            att_mem = (sigma_q @ mem.to(device)) / (sigma_q @ z)
 
             # Apply mem update
             # The update rules are described in equations (4) and (5) of the paper
