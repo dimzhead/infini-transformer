@@ -340,10 +340,10 @@ class YaRNEmbeddings(PositionEmbeddings):
             cos_sin_recalculated = False
         
         if self.dim_embedding_pct < 1.0:
-            x_pos = x[..., :self.effective_dim]
-            x_pass = x[..., self.effective_dim:]
+            x_pos = x[..., :self.effective_dim].to(device)
+            x_pass = x[..., self.effective_dim:].to(device)
         else:
-            x_pos = x
+            x_pos = x.to(device)
         
         # If no selection mask is specified, add embeddings as usual
         if select_mask is None:
