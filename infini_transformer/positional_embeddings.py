@@ -353,22 +353,22 @@ class YaRNEmbeddings(PositionEmbeddings):
                 x_cos = self.thetas.cos()[:, :, :x_pos.size(2), :].repeat(x_pos.size(0), x_pos.size(1), 1, 1) * x_pos
                 x_sin = x_pos[..., self.ixs_sin]
                 x_sin[..., self.ixs_sin_neg] = -x_sin[...,self.ixs_sin_neg]
-                x_sin *= self.thetas.sin()[:, :, :x_pos.size(2), :].repeat(x_pos.size(0), x_pos.size(1), 1, 1)
+                x_sin *= self.thetas.to(device).sin()[:, :, :x_pos.size(2), :].repeat(x_pos.size(0), x_pos.size(1), 1, 1)
             # Otherwise, perform calculations with the full cos_component and sin_component
             else:
                 x_cos = self.thetas.to(device).cos().repeat(x_pos.size(0), x_pos.size(1), 1, 1) * x_pos
                 x_sin = x_pos[..., self.ixs_sin]
                 x_sin[..., self.ixs_sin_neg] = -x_sin[...,self.ixs_sin_neg]
-                x_sin *= self.thetas.sin().repeat(x_pos.size(0), x_pos.size(1), 1, 1)
+                x_sin *= self.thetas.to(device).sin().repeat(x_pos.size(0), x_pos.size(1), 1, 1)
         # If a selection mask is specified, incorporate it into the positional embeddings
         else:
             if not cos_sin_recalculated:
                 self._calculate_thetas(total_seq_len=total_seq_len, offset=offset, select_mask=select_mask)
                 self.last_offset = offset
-            x_cos = self.thetas.cos().repeat(1, x_pos.size(1), 1, 1) * x_pos
+            x_cos = self.thetas.to(device).cos().repeat(1, x_pos.size(1), 1, 1) * x_pos
             x_sin = x_pos[..., self.ixs_sin]
             x_sin[..., self.ixs_sin_neg] = -x_sin[...,self.ixs_sin_neg]
-            x_sin *= self.thetas.sin().repeat(1, x_pos.size(1), 1, 1)
+            x_sin *= self.thetas.to(device).sin().repeat(1, x_pos.size(1), 1, 1)
             
         # If the sequence length is less than the maximum sequence length, concatenate positionally embedded
         # entries with original entries, otherwise return the positionally embedded entries
