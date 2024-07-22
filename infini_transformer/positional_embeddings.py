@@ -84,7 +84,7 @@ class RoPEEmbeddings(PositionEmbeddings):
             )
             # (n_obs, select_seq_len, effective_dim)
             thetas = thetas.transpose(0, 1).unsqueeze(0).repeat((select_mask.size(0), 1, 1)).to(device)
-            thetas *= select_ixs.to(device)
+            thetas *= select_ixs
             self.thetas = thetas.unsqueeze(1)
         
     def forward(self, x: torch.Tensor, total_seq_len: int = 0, offset: int = 0, select_mask: Optional[torch.Tensor] = None) -> torch.Tensor:
@@ -316,7 +316,7 @@ class YaRNEmbeddings(PositionEmbeddings):
             thetas = ((1. - ramp) * thetas / scale + ramp * thetas) * length_scale
             # (n_obs, select_seq_len, effective_dim)
             thetas = thetas.transpose(0, 1).unsqueeze(0).repeat((select_mask.size(0), 1, 1)).to(device)
-            thetas *= select_ixs.to(device)
+            thetas *= select_ixs
             self.thetas = thetas.unsqueeze(1)
         
     def forward(self, x: torch.Tensor, total_seq_len: int, offset: int = 0, select_mask: Optional[torch.Tensor] = None) -> torch.Tensor:
