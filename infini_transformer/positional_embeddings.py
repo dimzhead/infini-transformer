@@ -3,7 +3,7 @@ from typing import Optional
 
 import torch
 from torch import nn
-
+device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
 
 class PositionEmbeddings(nn.Module):
@@ -84,7 +84,7 @@ class RoPEEmbeddings(PositionEmbeddings):
             )
             # (n_obs, select_seq_len, effective_dim)
             thetas = thetas.transpose(0, 1).unsqueeze(0).repeat((select_mask.size(0), 1, 1))
-            thetas *= select_ixs
+            thetas *= select_ixs.to(device)
             self.thetas = thetas.unsqueeze(1)
         
     def forward(self, x: torch.Tensor, total_seq_len: int = 0, offset: int = 0, select_mask: Optional[torch.Tensor] = None) -> torch.Tensor:
