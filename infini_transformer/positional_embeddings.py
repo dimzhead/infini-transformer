@@ -356,7 +356,7 @@ class YaRNEmbeddings(PositionEmbeddings):
                 x_sin *= self.thetas.sin()[:, :, :x_pos.size(2), :].repeat(x_pos.size(0), x_pos.size(1), 1, 1)
             # Otherwise, perform calculations with the full cos_component and sin_component
             else:
-                x_cos = self.thetas.cos().repeat(x_pos.size(0), x_pos.size(1), 1, 1) * x_pos
+                x_cos = self.thetas.to(device).cos().repeat(x_pos.size(0), x_pos.size(1), 1, 1) * x_pos
                 x_sin = x_pos[..., self.ixs_sin]
                 x_sin[..., self.ixs_sin_neg] = -x_sin[...,self.ixs_sin_neg]
                 x_sin *= self.thetas.sin().repeat(x_pos.size(0), x_pos.size(1), 1, 1)
