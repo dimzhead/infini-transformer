@@ -192,6 +192,14 @@ class CompressiveMemory(nn.Module):
         out = torch.concat(out, dim=1)
 
         return out
+    def to(self, device):
+        super(MyModel, self).to(device)
+        for attr, value in self.__dict__.items():
+            if isinstance(value, torch.Tensor):
+                setattr(self, attr, value.to(device))
+            elif isinstance(value, nn.Module):
+                value.to(device)
+        return self
 
 
 def test_compressive_memory(
