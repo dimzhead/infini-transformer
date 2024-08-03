@@ -154,7 +154,7 @@ class CompressiveMemory(nn.Module):
             if self.causal:
                 mask = torch.tril(torch.ones((seg_len, seg_len), dtype=torch.bool), diagonal=0)
                 mask = mask.unsqueeze(0).unsqueeze(0).repeat((batch_size, self.num_heads, 1, 1))
-                scores.masked_fill_(torch.logical_not(mask.to(device)), float('-inf').to(device))
+                scores.masked_fill_(torch.logical_not(mask).to(device), float('-inf'))
 
             # Calculate SDP attention, completing equation (2) of the paper
             att_dot = nn.functional.softmax(scores, dim=-1) @ v
