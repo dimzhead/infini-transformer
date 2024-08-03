@@ -10,7 +10,7 @@ requires = ["setuptools"] # REQUIRED if [build-system] table is used
 build-backend = "setuptools.build_meta" # If not defined, then legacy behavior can happen.
 
 [project]
-name = "infini-transformer"
+name = "infini_transformer"
 version = "0.2.7"
 description = "Infini-Transformer is a powerful and versatile transformer model designed for a wide range of natural language processing tasks."
 readme = "readme.md"
