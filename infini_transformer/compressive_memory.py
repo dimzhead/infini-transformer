@@ -170,7 +170,7 @@ class CompressiveMemory(nn.Module):
             if self.update == "linear":
                 mem = mem.to(device) + sigma_k.transpose(-2, -1).to(device) @ v.to(device)
             elif self.update == "delta":
-                mem = mem + \
+                mem = mem.to(device) + \
                     sigma_k.transpose(-2, -1).to(device) @ (v.to(device) - (sigma_k.to(device) @ mem.to(device)) / (sigma_k.to(device) @ z.to(device)))
                     
             # Apply normalization term update
