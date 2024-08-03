@@ -180,9 +180,9 @@ class CompressiveMemory(nn.Module):
             # Calculate weighted average of dot-product and memory-based attention
             # The calculation is described in equation (6) of the paper
             att = nn.functional.sigmoid(
-                self.betas) * att_mem + (1 - nn.functional.sigmoid(self.betas)) * att_dot
+                self.betas.to(device)) * att_mem.to(device) + (1 - nn.functional.sigmoid(self.betas).to(device)) * att_dot.to(device)
             att = att.view((batch_size, seg_len,
-                        self.num_heads * self.dim_value))
+                        self.num_heads * self.dim_value)).to(device)
 
             # Append output to buffer
             # The calculation is described in equation (7) of the paper
